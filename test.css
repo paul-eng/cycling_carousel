@@ -1,0 +1,60 @@
+main {
+    background-color: pink;
+    width: 100%;
+    height: 100%;
+}
+
+.a {
+    filter:  sepia(100%) saturate(300%) brightness(70%) hue-rotate(180deg);
+}
+
+.b {
+    filter:   sepia(100%) saturate(300%) brightness(70%) hue-rotate(30deg);
+}
+
+.c {
+    filter:   sepia(100%) saturate(300%) brightness(70%) hue-rotate(330deg);
+}
+
+img {
+    width: 500px;
+}
+
+.pic {
+}
+
+.gallery {
+    position: relative;
+    margin: 0 auto;
+    width: 500px;
+    height: 500px;
+    border: 5px solid blue;
+    /* overflow: hidden; */
+}
+
+.images {
+    position: absolute;
+    display: flex;
+    left: -500px;
+}
+
+.next {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    width: 50px;
+    height: 50px;
+    background-color: yellow;
+    transition: .3s;
+}
+
+.next:hover {
+    transform: scale(1.2);
+    background-color: white;
+    cursor: pointer;
+}
+
+.next:active {
+    background-color: green;
+}
