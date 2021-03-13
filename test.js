@@ -24,36 +24,36 @@ function galleryInit(galleryObj) {
   // Track info about slide position, starting w offset of one slide, to account for the prepended clone
 
   let slideNumber = 1;
-  let imgPosition = -(imgW);
+  let imgPosition = -imgW;
   images.style.left = `${imgPosition}px`;
 
-
-  function advancePromise(direction) {
-    return new Promise((resolve, reject) => {
-      resolve(
-        (() => {
-          if (direction == "next") {
-            slideNumber += 1;
-          } else {
-            slideNumber -= 1;
-          }
-          imgPosition = -(slideNumber * imgW);
-          images.style.left = `${imgPosition}px`;
-        })()
-      );
-    });
+  function advanceSlide(direction) {
+    if (direction == "next") {
+        slideNumber += 1;
+      } else {
+        slideNumber -= 1;
+      }
+      imgPosition = -(slideNumber * imgW);
+      images.style.left = `${imgPosition}px`;
   }
 
   function resetPosition() {
-    // images.classList.toggle("noTransition");
-    images.style.left = 0;
+    slideNumber = 1;
+    images.style.left = -imgW;
+    images.removeEventListener("transitionend",resetPosition);
+  }
+
+  function addListener() {
+    return new Promise((resolve,reject)=>{
+        images.addEventListener("transitionend",resetPosition);
+    });
   }
 
   function nextSlide() {
     if (slideNumber < slideCount) {
-      advancePromise("next");
+      advanceSlide("next");
     } else {
-      advancePromise("next").then(setTimeout(resetPosition, 1));
+     addListener().then(advanceSlide("next"));
     }
   }
 }
