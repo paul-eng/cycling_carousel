@@ -4,6 +4,7 @@ function galleryInit(galleryObj) {
   nextButton = galleryObj.children[1];
   nextButton.addEventListener("click", nextSlide);
 
+  // Note slideCount is established before cloning any nodes
   let images = galleryObj.children[0];
   let slideCount = images.children.length;
 
@@ -21,39 +22,42 @@ function galleryInit(galleryObj) {
   galleryObj.style.width = `${imgW}px`;
   galleryObj.style.height = `${imgH}px`;
 
-  // Track info about slide position, starting w offset of one slide, to account for the prepended clone
+  // Track info about slide position, initialize w offset of one slide, to account for the prepended clone
 
   let slideNumber = 1;
-  let imgPosition = -imgW;
-  images.style.left = `${imgPosition}px`;
+  let pixelOffset = -imgW;
+  images.style.left = `${pixelOffset}px`;
+  let currentlyMoving = false;
 
-  function advanceSlide(direction) {
-    if (direction == "next") {
-        slideNumber += 1;
-      } else {
-        slideNumber -= 1;
-      }
-      imgPosition = -(slideNumber * imgW);
-      images.style.left = `${imgPosition}px`;
+  function updatePosition() {
+    slideNumber += 1;
+    pixelOffset = -(imgW * slideNumber);
+    images.style.left = `${pixelOffset}px`;
   }
 
   function resetPosition() {
     slideNumber = 1;
-    images.style.left = -imgW;
-    images.removeEventListener("transitionend",resetPosition);
+    images.style.left = `-${imgW}px`;
   }
 
-  function addListener() {
-    return new Promise((resolve,reject)=>{
-        images.addEventListener("transitionend",resetPosition);
+  function startMoving() {
+    return new Promise((resolve) => {
+      currentlyMoving = true;
+      console.log("i started");
+      images.addEventListener("transitionend", doneMoving);
+      resolve("Success");
     });
   }
 
+  function doneMoving() {
+    currentlyMoving = false;
+    console.log("its ovaaaa");
+    images.removeEventListener("transitionend", doneMoving);
+  }
+
   function nextSlide() {
-    if (slideNumber < slideCount) {
-      advanceSlide("next");
-    } else {
-     addListener().then(advanceSlide("next"));
+    if (currentlyMoving == false) {
+      startMoving().then(updatePosition);
     }
   }
 }
