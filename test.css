@@ -26,7 +26,11 @@ main {
 .images {
     position: absolute;
     display: flex;
-    transition: 6s;
+    transition: .5s;
+}
+
+.noTransition {
+    transition: none;
 }
 
 .next {

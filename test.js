@@ -36,26 +36,32 @@ function galleryInit(galleryObj) {
   }
 
   function resetPosition() {
+    images.classList.toggle("noTransition");
     slideNumber = 1;
     images.style.left = `-${imgW}px`;
+    setTimeout(()=>images.classList.toggle("noTransition"),1);
   }
 
   function startMoving() {
     return new Promise((resolve) => {
       currentlyMoving = true;
-      console.log("i started");
       images.addEventListener("transitionend", doneMoving);
       resolve("Success");
     });
   }
 
+  
   function doneMoving() {
-    currentlyMoving = false;
-    console.log("its ovaaaa");
+    if (slideNumber > slideCount ) {
+        resetPosition();
+    } 
+
     images.removeEventListener("transitionend", doneMoving);
+    currentlyMoving = false;
   }
 
   function nextSlide() {
+    //   Without promise to prevent button spamming, any calls to slide the images will resolve before a single transitionend is detected, triggering position reset. Result is images can fly way offscreen before snapping back into place.
     if (currentlyMoving == false) {
       startMoving().then(updatePosition);
     }
