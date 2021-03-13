@@ -16,18 +16,9 @@ main {
     filter:   sepia(100%) saturate(300%) brightness(70%) hue-rotate(330deg);
 }
 
-img {
-    width: 500px;
-}
-
-.pic {
-}
-
 .gallery {
     position: relative;
     margin: 0 auto;
-    width: 500px;
-    height: 500px;
     border: 5px solid blue;
     /* overflow: hidden; */
 }
@@ -35,13 +26,19 @@ img {
 .images {
     position: absolute;
     display: flex;
-    left: -500px;
+    left: 0;
+    transition: .5s;
+}
+
+.noTransition {
+    transition: 0;
 }
 
 .next {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 2;
     width: 50px;
     height: 50px;
@@ -50,7 +47,7 @@ img {
 }
 
 .next:hover {
-    transform: scale(1.2);
+    transform: translateY(-50%) scale(1.2);
     background-color: white;
     cursor: pointer;
 }

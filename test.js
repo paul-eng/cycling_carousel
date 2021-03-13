@@ -1,13 +1,61 @@
-slides = document.getElementsByClassName("images")[0];
+let gallery = document.getElementsByClassName("gallery")[0];
 
-nextButton = document.getElementsByClassName("next")[0];
-nextButton.addEventListener("click", nextSlide);
+function galleryInit(galleryObj) {
+  nextButton = galleryObj.children[1];
+  nextButton.addEventListener("click", nextSlide);
 
-let firstSlide = slides.children[0].cloneNode(true);
-let lastSlide = slides.children[slides.children.length - 1].cloneNode(true);
-slides.append(firstSlide);
-slides.insertBefore(lastSlide, slides.children[0]);
+  let images = galleryObj.children[0];
+  let slideCount = images.children.length;
 
-function nextSlide() {
+  // Insert clone of first slide on end, clone of last slide to front of images object
 
+  let firstSlide = images.children[0].cloneNode(true);
+  let lastSlide = images.children[images.children.length - 1].cloneNode(true);
+  images.append(firstSlide);
+  images.insertBefore(lastSlide, images.children[0]);
+
+  // Programatically set height/width of gallery wrapper object based on size of a slide
+
+  let imgW = firstSlide.offsetWidth;
+  let imgH = firstSlide.offsetHeight;
+  galleryObj.style.width = `${imgW}px`;
+  galleryObj.style.height = `${imgH}px`;
+
+  // Track info about slide position, starting w offset of one slide, to account for the prepended clone
+
+  let slideNumber = 1;
+  let imgPosition = -(imgW);
+  images.style.left = `${imgPosition}px`;
+
+
+  function advancePromise(direction) {
+    return new Promise((resolve, reject) => {
+      resolve(
+        (() => {
+          if (direction == "next") {
+            slideNumber += 1;
+          } else {
+            slideNumber -= 1;
+          }
+          imgPosition = -(slideNumber * imgW);
+          images.style.left = `${imgPosition}px`;
+        })()
+      );
+    });
+  }
+
+  function resetPosition() {
+    // images.classList.toggle("noTransition");
+    images.style.left = 0;
+  }
+
+  function nextSlide() {
+    if (slideNumber < slideCount) {
+      advancePromise("next");
+    } else {
+      advancePromise("next").then(setTimeout(resetPosition, 1));
+    }
+  }
 }
+
+galleryInit(gallery);
