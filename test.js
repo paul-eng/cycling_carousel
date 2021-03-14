@@ -25,10 +25,16 @@ function galleryInit(galleryObj) {
   images.style.left = `${-imgW}px`;
   let currentlyMoving = false;
 
-  nextButton = galleryObj.children[1];
+  let nextButton = galleryObj.children[1];
   nextButton.addEventListener("click", () => advanceSlide("next"));
-  prevButton = galleryObj.children[2];
+  let prevButton = galleryObj.children[2];
   prevButton.addEventListener("click", () => advanceSlide("prev"));
+  let overflowButton = document.getElementsByClassName("overflowToggle")[0];
+  overflowButton.addEventListener("click", switchOverflow);
+
+  function switchOverflow() {
+      gallery.classList.toggle("overflow");
+  }
 
   function updatePosition(direction) {
     direction == "next" ? (slideNumber += 1) : (slideNumber -= 1);
