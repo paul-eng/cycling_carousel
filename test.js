@@ -1,9 +1,6 @@
 let gallery = document.getElementsByClassName("gallery")[0];
 
 function galleryInit(galleryObj) {
-  nextButton = galleryObj.children[1];
-  nextButton.addEventListener("click", nextSlide);
-
   // Note slideCount is established before cloning any nodes
   let images = galleryObj.children[0];
   let slideCount = images.children.length;
@@ -25,24 +22,27 @@ function galleryInit(galleryObj) {
   // Track info about slide position, initialize w offset of one slide, to account for the prepended clone
 
   let slideNumber = 1;
-  let pixelOffset = -imgW;
-  images.style.left = `${pixelOffset}px`;
+  images.style.left = `${-imgW}px`;
   let currentlyMoving = false;
 
-  function updatePosition() {
-    slideNumber += 1;
-    pixelOffset = -(imgW * slideNumber);
-    images.style.left = `${pixelOffset}px`;
+  nextButton = galleryObj.children[1];
+  nextButton.addEventListener("click", () => advanceSlide("next"));
+  prevButton = galleryObj.children[2];
+  prevButton.addEventListener("click", () => advanceSlide("prev"));
+
+  function updatePosition(direction) {
+    direction == "next" ? (slideNumber += 1) : (slideNumber -= 1);
+    images.style.left = `-${imgW * slideNumber}px`;
   }
 
-  function resetPosition() {
+  function resetPosition(pos) {
     images.classList.toggle("noTransition");
-    slideNumber = 1;
-    images.style.left = `-${imgW}px`;
-    setTimeout(()=>images.classList.toggle("noTransition"),1);
+    pos == "start" ? (slideNumber = 1) : (slideNumber = slideCount);
+    images.style.left = `-${imgW * slideNumber}px`;
+    setTimeout(() => images.classList.toggle("noTransition"), 1);
   }
 
-  function startMoving() {
+  function followMovement() {
     return new Promise((resolve) => {
       currentlyMoving = true;
       images.addEventListener("transitionend", doneMoving);
@@ -50,20 +50,21 @@ function galleryInit(galleryObj) {
     });
   }
 
-  
   function doneMoving() {
-    if (slideNumber > slideCount ) {
-        resetPosition();
-    } 
+    if (slideNumber > slideCount) {
+      resetPosition("start");
+    } else if (slideNumber == 0) {
+      resetPosition("end");
+    }
 
     images.removeEventListener("transitionend", doneMoving);
     currentlyMoving = false;
   }
 
-  function nextSlide() {
+  function advanceSlide(direction) {
     //   Without promise to prevent button spamming, any calls to slide the images will resolve before a single transitionend is detected, triggering position reset. Result is images can fly way offscreen before snapping back into place.
     if (currentlyMoving == false) {
-      startMoving().then(updatePosition);
+      followMovement().then(() => updatePosition(direction));
     }
   }
 }

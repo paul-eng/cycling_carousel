@@ -1,0 +1,10 @@
+two main hurdles:
+
+1. toggle transitions off and back on for the instant reset effect. could constantly check whether transitions are on w/ every click, but better performance to just turn on/off once in the same reset function when it reaches the last image. 
+however trying to change a css property twice in the same func will result in only the most recent value to be used. solution = setTimeout for 0ms between the first and second calls
+
+2. create a listener for when transition animation ends to know when to toggle off transitions. but spamming button will stack and execute all the calls to move the slides before an eventlistener for transitionend fires. result is images can move an infinite distance offscreen before a position reset is triggered.
+solution = only allow button to go off when transition is not occuring
+
+
+in nextslide, try replacin currentlymoving = false w something like [if slideNumber < slideCount, updateposition, else if slideNumber > slideCount, update the position and then reset the position]. where do the promises and eventlistenrers go there
