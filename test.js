@@ -25,11 +25,13 @@ function galleryInit(galleryObj) {
   images.style.left = `${-imgW}px`;
   let currentlyMoving = false;
 
-  let nextButton = galleryObj.children[1];
+  let controls = document.getElementsByClassName("controls")[0];
+
+  let nextButton = controls.children[0];
   nextButton.addEventListener("click", () => advanceSlide("next"));
-  let prevButton = galleryObj.children[2];
+  let prevButton = controls.children[1];
   prevButton.addEventListener("click", () => advanceSlide("prev"));
-  let overflowButton = document.getElementsByClassName("overflowToggle")[0];
+  let overflowButton = controls.children[2];
   overflowButton.addEventListener("click", switchOverflow);
 
   function switchOverflow() {

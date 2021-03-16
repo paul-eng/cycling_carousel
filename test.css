@@ -1,7 +1,9 @@
-main {
+body {
     background-color: pink;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
 }
 
 .a {
@@ -16,10 +18,25 @@ main {
     filter:   sepia(100%) saturate(300%) brightness(70%) hue-rotate(330deg);
 }
 
+.galleryWrapper {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 auto;
+}
+
 .gallery {
     position: relative;
     margin: 0 auto;
-    border: 5px solid blue;
+}
+
+.gallery::after {
+    position: absolute;
+    border: 5px dashed blue;
+    content: '';
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .overflow {
@@ -36,64 +53,63 @@ main {
     transition: none;
 }
 
-.next {
+.next, .prev {
     position: absolute;
-    right: 0;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 2;
-    width: 50px;
-    height: 50px;
-    background-color: yellow;
-    transition: .3s;
+    z-index: 1;
+    transition: .2s;
+    border-top: 60px solid transparent;
+    border-bottom: 60px solid transparent;  
+    cursor: pointer;
+}
+
+.next {
+    right: 0%;
+    border-left: 60px solid gray;
 }
 
 .next:hover {
     transform: translateY(-50%) scale(1.2);
-    background-color: white;
-    cursor: pointer;
+    border-left-color: white;
 }
 
 .next:active {
-    background-color: green;
+    border-left-color: blue;
 }
 
 .prev {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
-    width: 50px;
-    height: 50px;
-    background-color: yellow;
-    transition: .3s;
+    left: 0%;
+    border-right: 60px solid gray;
 }
 
 .prev:hover {
     transform: translateY(-50%) scale(1.2);
-    background-color: white;
-    cursor: pointer;
+    border-right-color: white;
 }
 
 .prev:active {
-    background-color: green;
+    border-right-color: blue;
 }
 
 .overflowToggle {
-    width: 50px;
+    position: absolute;
+    width: 120px;
     height: 50px;
-    background-color: red;
-    margin: 50px auto;
-    transition: .3s;
+    background-color: gray;
+    bottom: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: .2s;
+    z-index: 1;
 }
 
 .overflowToggle:hover {
-    transform: scale(1.2);
+    transform: translateX(-50%) scale(1.2);
     background-color: white;
     cursor: pointer;
 }
 
 .overflowToggle:active {
-    background-color: green;
+    background-color: blue;
 }
