@@ -3,7 +3,14 @@ let gallery = document.getElementsByClassName("gallery")[0];
 function galleryInit(galleryObj) {
   // Note slide.count is established before cloning any nodes
   let images = galleryObj.children[0];
-  let slide = { count: images.children.length, active: 1};
+  let imageTracker = { count: images.children.length, active: 1 };
+  let slide = new Proxy(imageTracker, {
+    set: function (obj, prop, value) {
+      obj[prop] = value;
+      setOpacity();
+      return value;
+    },
+  });
 
   // Insert clone of first slide on end, clone of last slide to front of images object
 
@@ -35,17 +42,23 @@ function galleryInit(galleryObj) {
   let overflowButton = controls.children[1];
   overflowButton.addEventListener("click", switchOverflow);
 
+  let slides = Array.from(images.children);
+  setOpacity();
+
   function setOpacity() {
-    let slides = Array.from(images.children);
-    slides.forEach((slide,idx)=>{
-      idx == slide.active ? slide.style.opacity = "100%" : slide.style.opacity = "70%";
+    let galleryClasses = Array.from(galleryObj.classList);
+    slides.forEach((img, idx) => {
+      galleryClasses.includes("overflow")
+        ? (img.style.opacity = "100%")
+        : idx == slide.active
+        ? (img.style.opacity = "100%")
+        : (img.style.opacity = "40%");
     });
   }
 
-  // setOpacity();
-
   function switchOverflow() {
-      gallery.classList.toggle("overflow");
+    gallery.classList.toggle("overflow");
+    setOpacity();
   }
 
   function updatePosition(direction) {
