@@ -1,9 +1,9 @@
 let gallery = document.getElementsByClassName("gallery")[0];
 
 function galleryInit(galleryObj) {
-  // Note slideCount is established before cloning any nodes
+  // Note slide.count is established before cloning any nodes
   let images = galleryObj.children[0];
-  let slideCount = images.children.length;
+  let slide = { count: images.children.length, active: 1};
 
   // Insert clone of first slide on end, clone of last slide to front of images object
 
@@ -14,14 +14,15 @@ function galleryInit(galleryObj) {
 
   // Programatically set height/width of gallery wrapper object based on size of a slide
 
+  let wrapper = document.getElementsByClassName("gallery")[0].parentElement;
+
   let imgW = firstSlide.offsetWidth;
   let imgH = firstSlide.offsetHeight;
-  galleryObj.style.width = `${imgW}px`;
-  galleryObj.style.height = `${imgH}px`;
+  wrapper.style.width = `${imgW}px`;
+  wrapper.style.height = `${imgH}px`;
 
   // Track info about slide position, initialize w offset of one slide, to account for the prepended clone
 
-  let slideNumber = 1;
   images.style.left = `${-imgW}px`;
   let currentlyMoving = false;
 
@@ -29,24 +30,33 @@ function galleryInit(galleryObj) {
 
   let nextButton = controls.children[0];
   nextButton.addEventListener("click", () => advanceSlide("next"));
-  let prevButton = controls.children[1];
+  let prevButton = controls.children[2];
   prevButton.addEventListener("click", () => advanceSlide("prev"));
-  let overflowButton = controls.children[2];
+  let overflowButton = controls.children[1];
   overflowButton.addEventListener("click", switchOverflow);
+
+  function setOpacity() {
+    let slides = Array.from(images.children);
+    slides.forEach((slide,idx)=>{
+      idx == slide.active ? slide.style.opacity = "100%" : slide.style.opacity = "70%";
+    });
+  }
+
+  // setOpacity();
 
   function switchOverflow() {
       gallery.classList.toggle("overflow");
   }
 
   function updatePosition(direction) {
-    direction == "next" ? (slideNumber += 1) : (slideNumber -= 1);
-    images.style.left = `-${imgW * slideNumber}px`;
+    direction == "next" ? (slide.active += 1) : (slide.active -= 1);
+    images.style.left = `-${imgW * slide.active}px`;
   }
 
   function resetPosition(pos) {
     images.classList.toggle("noTransition");
-    pos == "start" ? (slideNumber = 1) : (slideNumber = slideCount);
-    images.style.left = `-${imgW * slideNumber}px`;
+    pos == "start" ? (slide.active = 1) : (slide.active = slide.count);
+    images.style.left = `-${imgW * slide.active}px`;
     setTimeout(() => images.classList.toggle("noTransition"), 1);
   }
 
@@ -59,9 +69,9 @@ function galleryInit(galleryObj) {
   }
 
   function doneMoving() {
-    if (slideNumber > slideCount) {
+    if (slide.active > slide.count) {
       resetPosition("start");
-    } else if (slideNumber == 0) {
+    } else if (slide.active == 0) {
       resetPosition("end");
     }
 
