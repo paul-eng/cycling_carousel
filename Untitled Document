@@ -6,6 +6,6 @@ however trying to change a css property twice in the same func will result in on
 2. create a listener for when transition animation ends to know when to toggle off transitions. but spamming button will stack and execute all the calls to move the slides before an eventlistener for transitionend fires. result is images can move an infinite distance offscreen before a position reset is triggered.
 solution = only allow button to go off when transition is not occuring
 
-originally tried to trigger setOpacity inside doneMoving, the last possible time for a change in slideNumber, but the transition is ugly with overflow hidden on. Instead turn slideNUmber = into a setter function that triggers setOpacity
+originally tried to trigger setOpacity inside doneMoving, the last possible time for a change in slide.active, but the transition is ugly with overflow hidden on. Instead turn "slide.active =" into a setter function that triggers setOpacity inside. At first tried using a Proxy object since it is expressly for this kind of situation, but it's inefficient. just created a Slide class object instead.
 
 
