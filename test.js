@@ -62,7 +62,7 @@ function galleryInit(galleryObj) {
         ? (img.style.opacity = "100%")
         : idx == slide.active
         ? (img.style.opacity = "100%")
-        : (img.style.opacity = "40%");
+        : (img.style.opacity = "60%");
     });
   }
 

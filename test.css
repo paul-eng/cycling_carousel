@@ -1,12 +1,12 @@
 body {
-    background-color: pink;
+    background-color: darksalmon;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
     margin: 0;
 }
 
-.a {
+/* .a {
     filter:  sepia(100%) saturate(300%) brightness(70%) hue-rotate(180deg);
 }
 
@@ -16,7 +16,7 @@ body {
 
 .c {
     filter:   sepia(100%) saturate(300%) brightness(70%) hue-rotate(330deg);
-}
+} */
 
 .galleryWrapper {
     position: relative;
@@ -35,7 +35,7 @@ body {
 
 .gallery::after {
     position: absolute;
-    border: 5px dashed blue;
+    border: 6px dashed royalblue;
     content: '';
     width: 100%;
     height: 100%;
@@ -67,57 +67,60 @@ body {
 
 .next {
     right: 0;
-    border-left: 25px solid white;
+    border-left: 25px solid royalblue;
 }
 
 .next:hover {
-    border-left-color: lightblue;
-    transform: scale(1.2);
+    border-left-color: cornflowerblue;
+    
 }
 
 .next:active {
-    border-left-color: blue;
+    border-left-color: rgb(175, 195, 232);
 }
 
 .prev {
     left: 0;
-    border-right: 25px solid white;
+    border-right: 25px solid royalblue;
 }
 
 .prev:hover {
-    border-right-color: lightblue;
-    transform: scale(1.2);
+    border-right-color: cornflowerblue;
+    
 }
 
 .prev:active {
-    border-right-color: blue;
+    border-right-color: rgb(175, 195, 232);
 }
 
 .overflowToggle {
-    width: 120px;
-    height: 50px;
-    background-color: white;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    font-family: Arial, sans-serif;
+    font-weight: 800;
+    background-color: royalblue;
     transition: .2s;
     z-index: 1;
 }
 
 .overflowToggle:hover {
-    transform: scale(1.2);
-    background-color:lightblue;
+    background-color:cornflowerblue;
     cursor: pointer;
-    transform: scale(1.2);
 
 }
 
 .overflowToggle:active {
-    background-color: blue;
+    background-color: rgb(175, 195, 232);
 }
 
 .controls {
     display: flex;
     flex-direction: row-reverse;
     width: 100%; 
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-top: 5%;
 }
 
