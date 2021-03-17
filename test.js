@@ -1,16 +1,26 @@
 let gallery = document.getElementsByClassName("gallery")[0];
 
 function galleryInit(galleryObj) {
-  // Note slide.count is established before cloning any nodes
-  let images = galleryObj.children[0];
-  let imageTracker = { count: images.children.length, active: 1 };
-  let slide = new Proxy(imageTracker, {
-    set: function (obj, prop, value) {
-      obj[prop] = value;
+
+  class Slide {
+    constructor(count, active) {
+      this.count = count;
+      this._active = active;
+    }
+  
+    set active(value) {
+      this._active = value;
       setOpacity();
       return value;
-    },
-  });
+    }
+  
+    get active() {
+      return this._active;
+    }
+  }
+  // Note slide.count is established before cloning any nodes
+  let images = galleryObj.children[0];
+  let slide = new Slide(images.children.length, 1);
 
   // Insert clone of first slide on end, clone of last slide to front of images object
 
