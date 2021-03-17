@@ -6,17 +6,9 @@ body {
     margin: 0;
 }
 
-/* .a {
-    filter:  sepia(100%) saturate(300%) brightness(70%) hue-rotate(180deg);
+img {
+    width: 25vw;
 }
-
-.b {
-    filter:   sepia(100%) saturate(300%) brightness(70%) hue-rotate(30deg);
-}
-
-.c {
-    filter:   sepia(100%) saturate(300%) brightness(70%) hue-rotate(330deg);
-} */
 
 .galleryWrapper {
     position: relative;
