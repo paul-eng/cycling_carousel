@@ -8,4 +8,5 @@ solution = only allow button to go off when transition is not occuring
 
 originally tried to trigger setOpacity inside doneMoving, the last possible time for a change in slide.active, but the transition is ugly with overflow hidden on. Instead turn "slide.active =" into a setter function that triggers setOpacity inside. At first tried using a Proxy object since it is expressly for this kind of situation, but it's inefficient. just created a Slide class object instead.
 
+would be better to use a different implementation w/ lazy loading for larger collections
 
